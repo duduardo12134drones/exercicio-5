@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas Interativo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            width: 250px;
+        }
+        button {
+            padding: 5px 10px;
+            margin-left: 5px;
+        }
+        ul {
+            margin-top: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .concluida {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerenciador de Tarefas</h1>
+
+    <input type="text" id="novaTarefa" placeholder="Digite uma nova tarefa">
+    <button type="button" onclick="adicionarTarefa()">Adicionar</button>
+    <button type="button" onclick="removerConcluidas()">Remover Concluídas</button>
+
+    <h2>Tarefas Pendentes:</h2>
+    <ul id="listaTarefas"></ul>
+
+    <script>
+        let tarefas = [];
+
+        function adicionarTarefa() {
+            let input = document.getElementById("novaTarefa");
+            let descricao = input.value.trim();
+            if (descricao === "") {
+                alert("Digite uma tarefa válida!");
+                return;
+            }
+            tarefas.push({ descricao: descricao, concluida: false });
+            input.value = "";
+            listarTarefas();
+        }
+
+        function removerConcluidas() {
+            tarefas = tarefas.filter(tarefa => !tarefa.concluida);
+            listarTarefas();
+        }
+
+        function atualizarStatus(index) {
+            tarefas[index].concluida = !tarefas[index].concluida;
+            listarTarefas();
+        }
+
+        function listarTarefas() {
+            let lista = document.getElementById("listaTarefas");
+            lista.innerHTML = "";
+            tarefas.forEach((tarefa, index) => {
+                let li = document.createElement("li");
+
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = tarefa.concluida;
+                checkbox.onclick = () => atualizarStatus(index);
+
+                li.appendChild(checkbox);
+                let texto = document.createTextNode(" " + tarefa.descricao);
+                if (tarefa.concluida) {
+                    let span = document.createElement("span");
+                    span.className = "concluida";
+                    span.appendChild(texto);
+                    li.appendChild(span);
+                } else {
+                    li.appendChild(texto);
+                }
+
+                lista.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
