@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Atendimento - Clínica Veterinária</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #2a7ae2;
+        }
+        input, select, button {
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .resultado {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Clínica Veterinária - Atendimento Interativo</h1>
+
+    <h2>1. Boas-vindas</h2>
+    <input type="text" id="nomeTutor" placeholder="Digite seu nome">
+    <button onclick="boasVindas()">Enviar</button>
+    <div id="saidaBoasVindas" class="resultado"></div>
+
+    <h2>2. Verificação de idade</h2>
+    <input type="number" id="idadeTutor" placeholder="Digite sua idade">
+    <button onclick="verificarIdade()">Verificar</button>
+    <div id="saidaIdade" class="resultado"></div>
+
+    <h2>3. Número da sorte</h2>
+    <input type="number" id="numeroSorte" placeholder="Digite seu número da sorte">
+    <button onclick="verificarParImpar()">Checar Par/Ímpar</button>
+    <div id="saidaSorte" class="resultado"></div>
+
+    <h2>4. Mini Calculadora</h2>
+    <select id="operacao">
+        <option value="+">Somar (+)</option>
+        <option value="-">Subtrair (-)</option>
+        <option value="*">Multiplicar (*)</option>
+        <option value="/">Dividir (/)</option>
+    </select>
+    <input type="number" id="valor1" placeholder="Valor 1">
+    <input type="number" id="valor2" placeholder="Valor 2">
+    <button onclick="miniCalculadora()">Calcular</button>
+    <div id="saidaCalculadora" class="resultado"></div>
+
+    <h2>5. Estação do ano</h2>
+    <input type="text" id="mesAno" placeholder="Digite o mês (ex: janeiro)">
+    <button onclick="verEstacao()">Ver Estação</button>
+    <div id="saidaEstacao" class="resultado"></div>
+
+    <h2>6. Próximos 5 números pares</h2>
+    <input type="number" id="numeroPositivo" placeholder="Digite um número positivo">
+    <button onclick="proximosPares()">Calcular</button>
+    <div id="saidaPares" class="resultado"></div>
+
+    <h2>7. Idade do cachorro</h2>
+    <input type="number" id="idadeCao" placeholder="Idade do cachorro">
+    <button onclick="idadeCachorroHumano()">Calcular idade humana</button>
+    <div id="saidaCachorro" class="resultado"></div>
+
+    <h2>8. Cálculo de área</h2>
+    <select id="forma" onchange="mostrarInputs()">
+        <option value="quadrado">Quadrado</option>
+        <option value="triangulo">Triângulo</option>
+        <option value="circulo">Círculo</option>
+    </select>
+    <div id="inputsForma"></div>
+    <button onclick="calcularArea()">Calcular Área</button>
+    <div id="saidaArea" class="resultado"></div>
+
+    <h2>9. Encerramento</h2>
+    <button onclick="encerramento()">Encerrar Atendimento</button>
+    <div id="saidaEncerramento" class="resultado"></div>
+
+    <script>
+        function boasVindas() {
+            let nome = document.getElementById("nomeTutor").value;
+            document.getElementById("saidaBoasVindas").innerText = "Seja bem-vindo, " + nome + "!";
+        }
+
+        function verificarIdade() {
+            let idade = parseInt(document.getElementById("idadeTutor").value);
+            let msg = idade >= 18 ? "Você é maior de idade. Autorizado a prosseguir." : "Você é menor de idade. Um responsável deve autorizar.";
+            document.getElementById("saidaIdade").innerText = msg;
+        }
+
+        function verificarParImpar() {
+            let num = parseInt(document.getElementById("numeroSorte").value);
+            let msg = num % 2 === 0 ? "Seu número da sorte é par!" : "Seu número da sorte é ímpar!";
+            document.getElementById("saidaSorte").innerText = msg;
+        }
+
+        function miniCalculadora() {
+            let op = document.getElementById("operacao").value;
+            let v1 = parseFloat(document.getElementById("valor1").value);
+            let v2 = parseFloat(document.getElementById("valor2").value);
+            let resultado;
+            switch(op) {
+                case "+": resultado = v1 + v2; break;
+                case "-": resultado = v1 - v2; break;
+                case "*": resultado = v1 * v2; break;
+                case "/": resultado = v2 !== 0 ? v1 / v2 : "Erro: divisão por zero!"; break;
+                default: resultado = "Operação inválida!";
+            }
+            document.getElementById("saidaCalculadora").innerText = "Resultado: " + resultado;
+        }
+
+        function verEstacao() {
+            let mes = document.getElementById("mesAno").value.toLowerCase();
+            let estacao;
+            switch(mes) {
+                case "dezembro": case "janeiro": case "fevereiro": estacao="Verão"; break;
+                case "março": case "abril": case "maio": estacao="Outono"; break;
+                case "junho": case "julho": case "agosto": estacao="Inverno"; break;
+                case "setembro": case "outubro": case "novembro": estacao="Primavera"; break;
+                default: estacao="Mês inválido!";
+            }
+            document.getElementById("saidaEstacao").innerText = "Estação: " + estacao;
+        }
+
+        function proximosPares() {
+            let n = parseInt(document.getElementById("numeroPositivo").value);
+            if (n <= 0) {
+                document.getElementById("saidaPares").innerText = "Número inválido! Deve ser maior que zero.";
+                return;
+            }
+            let pares = [];
+            let atual = n + 1;
+            while (pares.length < 5) {
+                if (atual % 2 === 0) pares.push(atual);
+                atual++;
+            }
+            document.getElementById("saidaPares").innerText = "Próximos 5 números pares: " + pares.join(", ");
+        }
+
+        function idadeCachorroHumano() {
+            let idade = parseInt(document.getElementById("idadeCao").value);
+            document.getElementById("saidaCachorro").innerText = "Idade do cachorro em anos humanos: " + (idade * 7);
+        }
+
+        function mostrarInputs() {
+            let forma = document.getElementById("forma").value;
+            let div = document.getElementById("inputsForma");
+            div.innerHTML = "";
+            if (forma === "quadrado") {
+                div.innerHTML = '<input type="number" id="lado" placeholder="Lado do quadrado">';
+            } else if (forma === "triangulo") {
+                div.innerHTML = '<input type="number" id="base" placeholder="Base"><input type="number" id="altura" placeholder="Altura">';
+            } else if (forma === "circulo") {
+                div.innerHTML = '<input type="number" id="raio" placeholder="Raio do círculo">';
+            }
+        }
+
+        function calcularArea() {
+            let forma = document.getElementById("forma").value;
+            let area;
+            if (forma === "quadrado") {
+                let lado = parseFloat(document.getElementById("lado").value);
+                area = lado * lado;
+            } else if (forma === "triangulo") {
+                let base = parseFloat(document.getElementById("base").value);
+                let altura = parseFloat(document.getElementById("altura").value);
+                area = (base * altura)/2;
+            } else if (forma === "circulo") {
+                let raio = parseFloat(document.getElementById("raio").value);
+                area = Math.PI * raio * raio;
+            }
+            document.getElementById("saidaArea").innerText = "Área: " + area.toFixed(2);
+        }
+
+        function encerramento() {
+            document.getElementById("saidaEncerramento").innerText = "Obrigado por utilizar o sistema da clínica veterinária. Seu pet agradece!";
+        }
+    </script>
+</body>
+</html>
